@@ -211,8 +211,9 @@ module.exports = (robot) ->
     PREPEND_MESSAGE += ' '
 
   # Check for standups that need to be fired, once a minute
-  # Monday to Friday.
-  new cronJob('1 * * * * 1-5', checkStandups, null, true)
+  # Defaults to Monday to Friday.
+  WEEKDAYS_CRON = process.env.HUBOT_STANDUP_WEEKDAYS or '1-5'
+  new cronJob('1 * * * * '+ WEEKDAYS_CRON, checkStandups, null, true)
 
   # Global regex should match all possible options
   robot.respond /(.*?)standups? ?(?:([A-z]*)\s?\@\s?)?((?:[01]?[0-9]|2[0-4]):[0-5]?[0-9])?(?: UTC([- +]\d\d?))?(.*)/i, (msg) ->
